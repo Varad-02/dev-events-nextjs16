@@ -113,7 +113,7 @@ eventSchema.pre("save", function (next) {
       .replace(/[^\w\s-]/g, "") // Remove special characters
       .replace(/\s+/g, "-") // Replace spaces with hyphens
       .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
-      .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
+      .replace(/^-+|-+$/g, "") + "-" + Date.now(); // Remove leading/trailing hyphens and append timestamp
   }
 
   // Normalize date to ISO format (YYYY-MM-DD) if modified
