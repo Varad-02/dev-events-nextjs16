@@ -23,7 +23,7 @@ const bookingSchema = new Schema<IBookingDocument>(
       lowercase: true,
       validate: {
         validator: (v: string) => {
-          // RFC 5322 compliant email regex
+          // Basic email validation regex
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           return emailRegex.test(v);
         },
