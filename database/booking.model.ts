@@ -37,9 +37,13 @@ const bookingSchema = new Schema<IBookingDocument>(
 );
 
 // Verify that the referenced event exists before saving
+import mongoose, { type Document, type Model, Schema } from "mongoose";
+import Event from "./event.model";
+
+// ... (rest of the file)
+
 bookingSchema.pre("save", async function (next) {
   if (this.isModified("eventId")) {
-    const Event = mongoose.model("Event");
     const eventExists = await Event.exists({ _id: this.eventId });
 
     if (!eventExists) {
