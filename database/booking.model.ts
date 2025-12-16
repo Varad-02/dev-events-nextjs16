@@ -1,4 +1,5 @@
 import mongoose, { type Document, type Model, Schema } from "mongoose";
+import Event from "./event.model";
 
 export interface IBooking {
   eventId: mongoose.Types.ObjectId;
@@ -37,11 +38,6 @@ const bookingSchema = new Schema<IBookingDocument>(
 );
 
 // Verify that the referenced event exists before saving
-import mongoose, { type Document, type Model, Schema } from "mongoose";
-import Event from "./event.model";
-
-// ... (rest of the file)
-
 bookingSchema.pre("save", async function (next) {
   if (this.isModified("eventId")) {
     const eventExists = await Event.exists({ _id: this.eventId });
