@@ -1,6 +1,6 @@
 import mongoose, { type ConnectOptions, type Mongoose } from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {
   // Fail fast during build/startup rather than throwing deep in request handlers.

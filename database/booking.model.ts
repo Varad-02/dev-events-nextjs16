@@ -38,16 +38,16 @@ const bookingSchema = new Schema<IBookingDocument>(
 );
 
 // Verify that the referenced event exists before saving
-bookingSchema.pre("save", async function (next) {
+bookingSchema.pre("save", async function () {
   if (this.isModified("eventId")) {
     const eventExists = await Event.exists({ _id: this.eventId });
 
     if (!eventExists) {
-      return next(new Error("Referenced event does not exist"));
+      return new Error("Referenced event does not exist");
     }
   }
 
-  next();
+
 });
 
 // Index on eventId for efficient queries (e.g., finding all bookings for an event)

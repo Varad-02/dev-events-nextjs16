@@ -121,12 +121,12 @@ eventSchema.pre("save", function (next) {
     // Expect ISO format YYYY-MM-DD or validate/convert other formats explicitly
     const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!isoDateRegex.test(this.date.trim())) {
-      return next(new Error("Date must be in YYYY-MM-DD format"));
+      return new Error("Date must be in YYYY-MM-DD format");
     }
 
     const parsedDate = new Date(this.date);
     if (isNaN(parsedDate.getTime())) {
-      return next(new Error("Invalid date format"));
+      return new Error("Invalid date format");
     }
     this.date = parsedDate.toISOString().split("T")[0];
   }
@@ -135,13 +135,13 @@ eventSchema.pre("save", function (next) {
   if (this.isModified("time")) {
     const timeRegex = /^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/i;
     if (!timeRegex.test(this.time.trim())) {
-      return next(new Error("Time must be in format HH:MM AM/PM"));
+      return new Error("Time must be in format HH:MM AM/PM");
     }
     // Normalize spacing and capitalization
     this.time = this.time.trim().replace(/\s+/g, " ").toUpperCase();
   }
 
-  next();
+
 });
 
 // Create unique index on slug for fast lookups
