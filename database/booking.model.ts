@@ -43,11 +43,9 @@ bookingSchema.pre("save", async function () {
     const eventExists = await Event.exists({ _id: this.eventId });
 
     if (!eventExists) {
-      return new Error("Referenced event does not exist");
+      throw new Error("Referenced event does not exist");
     }
   }
-
-
 });
 
 // Index on eventId for efficient queries (e.g., finding all bookings for an event)
