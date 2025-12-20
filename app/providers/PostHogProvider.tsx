@@ -22,9 +22,10 @@ export default function PostHogProvider({ children }: { children: React.ReactNod
         });
 
         // ⭐ Add this line to expose PostHog for console tests:
-        //(window as any).posthog = posthog;
+        // Use a narrow type instead of `any` to satisfy lint rules
         if (process.env.NODE_ENV === "development") {
-            (window as any).posthog = posthog;
+            interface PosthogWindow extends Window { posthog?: typeof posthog }
+            (window as unknown as PosthogWindow).posthog = posthog;
         }
 
     }, []);

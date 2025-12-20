@@ -1,11 +1,13 @@
 import mongoose, { type ConnectOptions, type Mongoose } from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   // Fail fast during build/startup rather than throwing deep in request handlers.
   throw new Error("Missing MONGODB_URI in environment variables");
 }
+
+const MONGODB_URI_STR: string = MONGODB_URI as string;
 
 type MongooseCache = {
   conn: Mongoose | null;
@@ -33,7 +35,7 @@ export async function connectToDatabase(): Promise<Mongoose> {
       bufferCommands: false,
     };
 
-      cached.promise = mongoose.connect(MONGODB_URI, opts).then((m) => m).catch((err) => {
+      cached.promise = mongoose.connect(MONGODB_URI_STR, opts).then((m) => m).catch((err) => {
                 // Clear the cached promise so the next call can retry
                     cached.promise = null;
                 throw err;
