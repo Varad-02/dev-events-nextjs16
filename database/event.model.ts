@@ -1,6 +1,6 @@
 import mongoose, { type Document, type Model, Schema } from "mongoose";
 
-export interface IEvent {
+export interface IEvent extends Document{
   title: string;
   slug: string;
   description: string;
@@ -123,14 +123,14 @@ eventSchema.pre("save" as any, function (this: IEventDocument, next: (err?: Erro
     // Expect ISO format YYYY-MM-DD or validate/convert other formats explicitly
     const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!isoDateRegex.test(this.date.trim())) {
-      next(new Error("Date must be in YYYY-MM-DD format"));
-      return;
+      throw new Error("Date must be in YYYY-MM-DD format");
+
     }
 
     const parsedDate = new Date(this.date);
     if (isNaN(parsedDate.getTime())) {
-      next(new Error("Invalid date format"));
-      return;
+      throw new Error("Invalid date format");
+
     }
     this.date = parsedDate.toISOString().split("T")[0];
   }
@@ -139,15 +139,15 @@ eventSchema.pre("save" as any, function (this: IEventDocument, next: (err?: Erro
   if (this.isModified("time")) {
     const timeRegex = /^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/i;
     if (!timeRegex.test(this.time.trim())) {
-      next(new Error("Time must be in format HH:MM AM/PM"));
-      return;
+      throw new Error("Time must be in format HH:MM AM/PM");
+
     }
     // Normalize spacing and capitalization
     this.time = this.time.trim().replace(/\s+/g, " ").toUpperCase();
   }
 
   // All validations passed
-  next();
+
 
 });
 
